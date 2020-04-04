@@ -1,0 +1,18 @@
+@use super::head_html;
+@use super::footer_html;
+@use crate::models::Category;
+
+
+@(categories: &[Category])
+
+@:head_html(categories)
+
+
+<div id="news">
+    <ul>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+
+@:footer_html()

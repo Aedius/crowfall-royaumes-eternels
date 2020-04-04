@@ -1,0 +1,60 @@
+@use super::statics::base_css;
+@use crate::models::Category;
+@use super::statics::fond_jpg;
+@use super::statics::fond_footer_jpg;
+@(categories: &[Category])
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Royaumes Eternels</title>
+
+    <meta name="description" content="Communauté Francophone pour Crowfall">
+
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/@base_css.name"/>
+
+    <style>
+        body @{
+            background-image: url("statics/@fond_footer_jpg.name");
+        @}
+
+        #global-container @{
+            background-image: url('statics/@fond_jpg.name');
+        @}
+    </style>
+</head>
+
+
+<body>
+<div id="global-container">
+
+    <!-- Navbar -->
+    <div id="menu-container">
+        <header>
+            <nav>
+                <ul>
+                    <li class="dropdown">
+                        <button class="dropbtn">↯ Categories</button>
+                        <ul class="dropdown-content">
+                            @for Category{path, name} in categories {
+                            <li>
+                                <a href="@path">@name</a>
+                            </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+    <div id="header-container">
+        <h2 class="title"><a href="/">Royaumes Eternels</a></h2>
+    </div>
