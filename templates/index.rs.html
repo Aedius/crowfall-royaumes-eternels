@@ -1,11 +1,10 @@
 @use super::head_html;
 @use super::footer_html;
-@use crate::models::Category;
+@use crate::models::Config;
 
+@(config: &Config)
 
-@(categories: &[Category])
-
-@:head_html(categories)
+@:head_html(config)
 
 
 <div id="news">

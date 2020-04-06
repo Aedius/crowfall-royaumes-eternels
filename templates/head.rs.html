@@ -1,8 +1,8 @@
 @use super::statics::base_css;
-@use crate::models::Category;
+@use crate::models::{Config, Category};
 @use super::statics::fond_jpg;
 @use super::statics::fond_footer_jpg;
-@(categories: &[Category])
+@(config: &Config)
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -43,7 +43,7 @@
                     <li class="dropdown">
                         <button class="dropbtn">↯ Categories</button>
                         <ul class="dropdown-content">
-                            @for Category{path, name} in categories {
+                            @for Category{path, name} in &config.categories {
                             <li>
                                 <a href="@path">@name</a>
                             </li>

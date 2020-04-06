@@ -8,15 +8,19 @@ include!(concat!(env!("OUT_DIR"), "/templates.rs"));
 use templates::index;
 use templates::statics::StaticFile;
 use templates::statics::favicon_ico;
-use crate::models::Category;
+use crate::models::{Category, Config};
+
 
 fn main() {
     let server = Server::http("0.0.0.0:8000").unwrap();
 
     let mut categories = Vec::new();
     categories.push(Category{ path: "test", name: "TEST" });
+    categories.push(Category{ path: "test 2", name: "TEST 2" });
 
-
+    let config = Config{
+        categories
+    };
 
     println!("listening on 8000");
 
@@ -27,7 +31,7 @@ fn main() {
                  request.headers(),
         );
         if request.method() == &Method::Get {
-            match handle_get(request, &categories) {
+            match handle_get(request, &config) {
                 Ok(_) => {}
                 Err(e) => {
                     println!("{}", e)
@@ -44,11 +48,11 @@ fn main() {
     }
 }
 
-fn handle_get(request: Request, categories : &Vec<Category>) -> Result<(), IoError> {
+fn handle_get(request: Request, config: &Config) -> Result<(), IoError> {
     let url = request.url();
 
     if url == "/" {
-        let mut response = tiny_http::Response::from_string(r2s(|o| index(o, categories)));
+        let mut response = tiny_http::Response::from_string(r2s(|o| index(o, &config)));
         let header = tiny_http::Header::from_bytes(&b"Content-Type"[..], &b"text/html; charset=utf-8"[..]).unwrap();
         response.add_header(header);
         return request.respond(response);
@@ -64,8 +68,6 @@ fn handle_get(request: Request, categories : &Vec<Category>) -> Result<(), IoErr
     }
 
     let tokens:Vec<&str>= url.split("/").collect();
-
-    println!("{:?}", tokens);
 
     if tokens.len() != 3 {
         return request.respond(Response::new_empty(StatusCode(404)));
@@ -95,6 +97,10 @@ fn r2s<Call>(call: Call) -> String
 
 
 mod models {
+
+    pub struct Config<'a>{
+        pub categories : Vec<Category<'a>>
+    }
 
     pub struct Category<'a> {
         pub path: &'a str,

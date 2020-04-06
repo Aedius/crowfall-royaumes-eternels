@@ -3,6 +3,7 @@
   margin-left: auto;
   margin-right: auto;
   width: $width-central;
+  max-width: 99%;
 }
 
 @mixin vertical-center($size) {
