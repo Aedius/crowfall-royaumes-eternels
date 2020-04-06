@@ -1,6 +1,6 @@
 @use super::head_html;
 @use super::footer_html;
-@use crate::models::{Config, Index, Slide};
+@use crate::models::{Band, Config, Index, Slide};
 
 @(config: &Config, data: &Index)
 
@@ -31,6 +31,14 @@
         <button class="slide-minus" onclick="plusDivs(-1)">🢦</button>
         <button class="slide-plus" onclick="plusDivs(1)">🢧</button>
 
+    </div>
+}
+
+@if let Some(Band{url, content}) = data.band {
+    <div id="news">
+        <a href="@url">
+            @content
+        </a>
     </div>
 }
 

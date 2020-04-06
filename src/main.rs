@@ -15,7 +15,7 @@ use templates::statics::elfettes_png;
 use templates::statics::village_png;
 
 
-use crate::models::{Category, Config, Index, Slide, Article};
+use crate::models::{Category, Config, Index, Slide, Article, Band};
 
 
 fn main() {
@@ -92,22 +92,25 @@ fn handle_get(request: Request, config: &Config) -> Result<(), IoError> {
 fn handle_index(config: &Config) -> Response<Cursor<Vec<u8>>> {
     let data = Index {
         slides: vec![Slide {
-            src: map_jpg.name,
-            alt: "Map",
+            src: village_png.name,
+            alt: "village",
             url: None,
-            content: "Plusieurs cartes",
+            content: "Bienvenue au village",
         }, Slide {
             src: elfettes_png.name,
             alt: "elfettes",
             url: None,
-            content: "oui",
+            content: "Les elfes vous attendent",
         }, Slide {
-            src: village_png.name,
-            alt: "village",
+            src: map_jpg.name,
+            alt: "Map",
             url: None,
-            content: "non",
-        },
-        ],
+            content: "Sur une des campagnes",
+        },],
+        band: Some(Band{
+            url: "https://www.youtube.com/channel/UCit0NjPf6lMXAwx2xnnOy2g",
+            content: "Suivez le projet Maeve sur youtube !"
+        }),
         articles: vec![Article {
             title: "D"
         }],
@@ -142,6 +145,7 @@ mod models {
     pub struct Index<'a> {
         pub slides: Vec<Slide<'a>>,
         pub articles: Vec<Article<'a>>,
+        pub band: Option<Band<'a>>
     }
 
     pub struct Slide<'a> {
@@ -151,7 +155,13 @@ mod models {
         pub content: &'a str,
     }
 
+    pub struct Band<'a> {
+        pub url: &'a str,
+        pub content: &'a str,
+    }
+
     pub struct Article<'a> {
         pub title: &'a str,
     }
+
 }
