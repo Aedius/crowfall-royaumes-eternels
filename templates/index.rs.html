@@ -1,17 +1,41 @@
 @use super::head_html;
 @use super::footer_html;
-@use crate::models::Config;
+@use crate::models::{Config, Index, Slide};
 
-@(config: &Config)
+@(config: &Config, data: &Index)
 
-@:head_html(config)
+@:head_html(config, true)
+
+@if !data.slides.is_empty() {
+    <div id="slide">
+
+        @for Slide{src, alt, url, content} in &data.slides {
+        <div class="slide-container">
+            <img src="/static/@src"
+                 alt="@alt"
+                 width="1190"
+                 height="440"
+            />
+            <div class="slide-content">
+                @if let Some(url) = url {
+                    <a href="@url">
+                        @content
+                    </a>
+                }else{
+                    @content
+                }
+            </div>
+        </div>
+        }
+
+        <button class="slide-minus" onclick="plusDivs(-1)">🢦</button>
+        <button class="slide-plus" onclick="plusDivs(1)">🢧</button>
+
+    </div>
+}
+
+<div class="spacer"></div>
 
 
-<div id="news">
-    <ul>
-        <li></li>
-        <li></li>
-    </ul>
-</div>
 
 @:footer_html()
