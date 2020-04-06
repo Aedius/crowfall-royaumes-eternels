@@ -44,6 +44,54 @@
 
 <div class="spacer"></div>
 
+<div id="main-container">
+
+    <article>
+
+        {% for article in articleList %}
+        <section>
+
+            <div class="img-container">
+                <img src="/cache/240x130{{ vich_uploader_asset(article, 'imageFile') }}"
+                     width="240" height="130"
+                     alt="image for : {{ article.titre }}"/>
+            </div>
+            <div class="info-container">
+
+                {% include 'global/_part/buttonList.html.twig' with { 'article': article } only %}
+
+                {% if loop.first %}
+                <h2>
+                    <a href="{{ path('article_show', {'id': article.id, 'slug': article.slug}) }}">{{ article.titre }}</a>
+                </h2>
+                {% else %}
+                <h3>
+                    <a href="{{ path('article_show', {'id': article.id, 'slug': article.slug}) }}">{{ article.titre }}</a>
+                </h3>
+                {% endif %}
+                <p>
+                    Par <a href="{{ path('user_article_show', {'id': article.author.id, 'slug': article.author.usernameCanonical }) }}">{{ article.author.username }}</a>,
+                    le {{ article.getPublishedAt|date("d/m/Y à H:i") }}
+                    {% if article.commentList|length >1 %} | <a href="{{ path('article_show', {'id': article.id, 'slug': article.slug}) }}#comment">🗩 {{ article.commentList|length }}
+                    commentaires</a>{% endif %}
+
+                </p>
+                <p> {{ article.content|striptags|slice(0, 300)|raw }} ...
+                    <a href="{{ path('article_show', {'id': article.id, 'slug': article.slug}) }}">
+                        Lire la suite
+                    </a>
+                </p>
+            </div>
+
+
+        </section>
+        {% endfor %}
+
+    </article>
+
+</div>
+<div class="spacer"></div>
+
 
 
 @:footer_html()

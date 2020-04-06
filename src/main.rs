@@ -161,6 +161,7 @@ mod models {
     }
 
     pub struct Article<'a> {
+        pub img: &'a str,
         pub title: &'a str,
     }
 
