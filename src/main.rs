@@ -1,23 +1,19 @@
 use std::env;
-use std::io::{self, Write, Error as IoError, Cursor};
-
+use std::io::{self, Cursor, Error as IoError, Write};
 
 use tiny_http::{Method, Request, Response, Server, StatusCode};
 
-include!(concat!(env!("OUT_DIR"), "/templates.rs"));
 use templates::index;
-use templates::statics::StaticFile;
+use templates::statics::elfettes_png;
 use templates::statics::favicon_ico;
-
 //slide
 use templates::statics::map_jpg;
-use templates::statics::elfettes_png;
+use templates::statics::StaticFile;
 use templates::statics::village_png;
 
+use crate::models::{Article, Band, Category, Config, Index, Slide, SubCategory};
 
-use crate::models::{Article, Band, Category, Config, Index, Slide,  SubCategory};
-
-
+include!(concat!(env!("OUT_DIR"), "/templates.rs"));
 fn main() {
     let server = Server::http("0.0.0.0:8000").unwrap();
 
@@ -32,10 +28,10 @@ fn main() {
     profession.push(SubCategory { path: "test 2", name: "Joaillier" });
 
     let mut menu = Vec::new();
-    menu.push(Category{
+    menu.push(Category {
         name: "🛠 Métier",
-        sub_categories: profession
-    } );
+        sub_categories: profession,
+    });
 
     let config = Config {
         categories: menu
@@ -118,10 +114,10 @@ fn handle_index(config: &Config) -> Response<Cursor<Vec<u8>>> {
             alt: "Map",
             url: None,
             content: "Sur une des campagnes",
-        },],
-        band: Some(Band{
+        }, ],
+        band: Some(Band {
             url: "https://www.youtube.com/channel/UCit0NjPf6lMXAwx2xnnOy2g",
-            content: "Suivez le projet Maeve sur youtube !"
+            content: "Suivez le projet Maeve sur youtube !",
         }),
         articles: vec![Article {
             img: "img",
@@ -157,8 +153,9 @@ mod models {
 
     pub struct Category<'a> {
         pub name: &'a str,
-        pub sub_categories: Vec<SubCategory<'a>>
+        pub sub_categories: Vec<SubCategory<'a>>,
     }
+
     pub struct SubCategory<'a> {
         pub path: &'a str,
         pub name: &'a str,
@@ -167,7 +164,7 @@ mod models {
     pub struct Index<'a> {
         pub slides: Vec<Slide<'a>>,
         pub articles: Vec<Article<'a>>,
-        pub band: Option<Band<'a>>
+        pub band: Option<Band<'a>>,
     }
 
     pub struct Slide<'a> {
@@ -192,5 +189,4 @@ mod models {
         pub resume: &'a str,
 
     }
-
 }
