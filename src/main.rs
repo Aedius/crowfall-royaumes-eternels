@@ -15,18 +15,30 @@ use templates::statics::elfettes_png;
 use templates::statics::village_png;
 
 
-use crate::models::{Category, Config, Index, Slide, Article, Band};
+use crate::models::{Article, Band, Category, Config, Index, Slide,  SubCategory};
 
 
 fn main() {
     let server = Server::http("0.0.0.0:8000").unwrap();
 
-    let mut categories = Vec::new();
-    categories.push(Category { path: "test", name: "TEST" });
-    categories.push(Category { path: "test 2", name: "TEST 2" });
+    let mut profession = Vec::new();
+    profession.push(SubCategory { path: "craft", name: "Fabricant de runes" });
+    profession.push(SubCategory { path: "test 2", name: "Nécromant" });
+    profession.push(SubCategory { path: "test 2", name: "Alchémiste" });
+    profession.push(SubCategory { path: "test 2", name: "Tailleur de pierre" });
+    profession.push(SubCategory { path: "test 2", name: "Ebeniste" });
+    profession.push(SubCategory { path: "test 2", name: "Forgeron" });
+    profession.push(SubCategory { path: "test 2", name: "Maroquinier" });
+    profession.push(SubCategory { path: "test 2", name: "Joaillier" });
+
+    let mut menu = Vec::new();
+    menu.push(Category{
+        name: "🛠 Métier",
+        sub_categories: profession
+    } );
 
     let config = Config {
-        categories
+        categories: menu
     };
 
     println!("listening on 8000");
@@ -112,7 +124,13 @@ fn handle_index(config: &Config) -> Response<Cursor<Vec<u8>>> {
             content: "Suivez le projet Maeve sur youtube !"
         }),
         articles: vec![Article {
-            title: "D"
+            img: "img",
+            title: "premier article",
+            url: "url",
+            author: "Aedius",
+            published: "2 avril 2020",
+            updated: "4 avril 2020",
+            resume: "TEST TEST TEST",
         }],
     };
 
@@ -138,6 +156,10 @@ mod models {
     }
 
     pub struct Category<'a> {
+        pub name: &'a str,
+        pub sub_categories: Vec<SubCategory<'a>>
+    }
+    pub struct SubCategory<'a> {
         pub path: &'a str,
         pub name: &'a str,
     }
@@ -163,6 +185,12 @@ mod models {
     pub struct Article<'a> {
         pub img: &'a str,
         pub title: &'a str,
+        pub url: &'a str,
+        pub author: &'a str,
+        pub published: &'a str,
+        pub updated: &'a str,
+        pub resume: &'a str,
+
     }
 
 }

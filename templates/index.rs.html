@@ -1,45 +1,45 @@
 @use super::head_html;
 @use super::footer_html;
-@use crate::models::{Band, Config, Index, Slide};
+@use crate::models::{Article, Band, Config, Index, Slide};
 
 @(config: &Config, data: &Index)
 
 @:head_html(config, true)
 
 @if !data.slides.is_empty() {
-    <div id="slide">
+<div id="slide">
 
-        @for Slide{src, alt, url, content} in &data.slides {
-        <div class="slide-container">
-            <img src="/static/@src"
-                 alt="@alt"
-                 width="1190"
-                 height="440"
-            />
-            <div class="slide-content">
-                @if let Some(url) = url {
-                    <a href="@url">
-                        @content
-                    </a>
-                }else{
-                    @content
-                }
-            </div>
+    @for Slide{src, alt, url, content} in &data.slides {
+    <div class="slide-container">
+        <img src="/static/@src"
+             alt="@alt"
+             width="1190"
+             height="440"
+        />
+        <div class="slide-content">
+            @if let Some(url) = url {
+            <a href="@url">
+                @content
+            </a>
+            }else{
+            @content
+            }
         </div>
-        }
-
-        <button class="slide-minus" onclick="plusDivs(-1)">🢦</button>
-        <button class="slide-plus" onclick="plusDivs(1)">🢧</button>
-
     </div>
+    }
+
+    <button class="slide-minus" onclick="plusDivs(-1)">🢦</button>
+    <button class="slide-plus" onclick="plusDivs(1)">🢧</button>
+
+</div>
 }
 
 @if let Some(Band{url, content}) = data.band {
-    <div id="news">
-        <a href="@url">
-            @content
-        </a>
-    </div>
+<div id="news">
+    <a href="@url">
+        @content
+    </a>
+</div>
 }
 
 <div class="spacer"></div>
@@ -48,50 +48,34 @@
 
     <article>
 
-        {% for article in articleList %}
+        @for Article{img, title, url, author, published, resume, ..} in &data.articles {
         <section>
-
             <div class="img-container">
-                <img src="/cache/240x130{{ vich_uploader_asset(article, 'imageFile') }}"
+                <img src="/static/@img"
                      width="240" height="130"
-                     alt="image for : {{ article.titre }}"/>
+                     alt="image for : @title"/>
             </div>
             <div class="info-container">
-
-                {% include 'global/_part/buttonList.html.twig' with { 'article': article } only %}
-
-                {% if loop.first %}
                 <h2>
-                    <a href="{{ path('article_show', {'id': article.id, 'slug': article.slug}) }}">{{ article.titre }}</a>
+                    <a href="@url">@title</a>
                 </h2>
-                {% else %}
-                <h3>
-                    <a href="{{ path('article_show', {'id': article.id, 'slug': article.slug}) }}">{{ article.titre }}</a>
-                </h3>
-                {% endif %}
                 <p>
-                    Par <a href="{{ path('user_article_show', {'id': article.author.id, 'slug': article.author.usernameCanonical }) }}">{{ article.author.username }}</a>,
-                    le {{ article.getPublishedAt|date("d/m/Y à H:i") }}
-                    {% if article.commentList|length >1 %} | <a href="{{ path('article_show', {'id': article.id, 'slug': article.slug}) }}#comment">🗩 {{ article.commentList|length }}
-                    commentaires</a>{% endif %}
-
+                    Par @author, le @published
                 </p>
-                <p> {{ article.content|striptags|slice(0, 300)|raw }} ...
-                    <a href="{{ path('article_show', {'id': article.id, 'slug': article.slug}) }}">
-                        Lire la suite
-                    </a>
+                <p>
+                    @resume
+                </p>
+                <p>
+                    <a href="@url"> Lire la suite</a>
                 </p>
             </div>
-
-
         </section>
-        {% endfor %}
+        }
 
     </article>
 
 </div>
 <div class="spacer"></div>
-
 
 
 @:footer_html()
