@@ -11,31 +11,12 @@ use templates::statics::map_jpg;
 use templates::statics::StaticFile;
 use templates::statics::village_png;
 
-use crate::models::{Article, Band, Category, Config, Index, Slide, SubCategory};
+use crate::models::{Article, Band, Category, Index, Slide, SubCategory};
 
 include!(concat!(env!("OUT_DIR"), "/templates.rs"));
 fn main() {
     let server = Server::http("0.0.0.0:8000").unwrap();
 
-    let mut profession = Vec::new();
-    profession.push(SubCategory { path: "craft", name: "Fabricant de runes" });
-    profession.push(SubCategory { path: "test 2", name: "Nécromant" });
-    profession.push(SubCategory { path: "test 2", name: "Alchémiste" });
-    profession.push(SubCategory { path: "test 2", name: "Tailleur de pierre" });
-    profession.push(SubCategory { path: "test 2", name: "Ebeniste" });
-    profession.push(SubCategory { path: "test 2", name: "Forgeron" });
-    profession.push(SubCategory { path: "test 2", name: "Maroquinier" });
-    profession.push(SubCategory { path: "test 2", name: "Joaillier" });
-
-    let mut menu = Vec::new();
-    menu.push(Category {
-        name: "🛠 Métier",
-        sub_categories: profession,
-    });
-
-    let config = Config {
-        categories: menu
-    };
 
     println!("listening on 8000");
 
@@ -46,7 +27,7 @@ fn main() {
                  request.headers(),
         );
         if request.method() == &Method::Get {
-            match handle_get(request, &config) {
+            match handle_get(request) {
                 Ok(_) => {}
                 Err(e) => {
                     println!("{}", e)
@@ -63,11 +44,11 @@ fn main() {
     }
 }
 
-fn handle_get(request: Request, config: &Config) -> Result<(), IoError> {
+fn handle_get(request: Request) -> Result<(), IoError> {
     let url = request.url();
 
     if url == "/" {
-        let response = handle_index(&config);
+        let response = handle_index();
         return request.respond(response);
     }
 
@@ -97,7 +78,7 @@ fn handle_get(request: Request, config: &Config) -> Result<(), IoError> {
     request.respond(Response::new_empty(StatusCode(404)))
 }
 
-fn handle_index(config: &Config) -> Response<Cursor<Vec<u8>>> {
+fn handle_index() -> Response<Cursor<Vec<u8>>> {
     let data = Index {
         slides: vec![Slide {
             src: village_png.name,
@@ -130,7 +111,7 @@ fn handle_index(config: &Config) -> Response<Cursor<Vec<u8>>> {
         }],
     };
 
-    let mut response = tiny_http::Response::from_string(r2s(|o| index(o, &config, &data)));
+    let mut response = tiny_http::Response::from_string(r2s(|o| index(o, &data)));
     let header = tiny_http::Header::from_bytes(&b"Content-Type"[..], &b"text/html; charset=utf-8"[..]).unwrap();
     response.add_header(header);
     response
@@ -146,11 +127,30 @@ fn r2s<Call>(call: Call) -> String
 }
 
 
-mod models {
-    pub struct Config<'a> {
-        pub categories: Vec<Category<'a>>
-    }
+fn menu(out: &mut dyn Write) -> io::Result<()> {
+    let mut profession = Vec::new();
+    profession.push(SubCategory { path: "craft", name: "Fabricant de runes" });
+    profession.push(SubCategory { path: "test 2", name: "Nécromant" });
+    profession.push(SubCategory { path: "test 2", name: "Alchémiste" });
+    profession.push(SubCategory { path: "test 2", name: "Tailleur de pierre" });
+    profession.push(SubCategory { path: "test 2", name: "Ebeniste" });
+    profession.push(SubCategory { path: "test 2", name: "Forgeron" });
+    profession.push(SubCategory { path: "test 2", name: "Maroquinier" });
+    profession.push(SubCategory { path: "test 2", name: "Joaillier" });
 
+    let mut menu = Vec::new();
+    menu.push(Category {
+        name: "🛠 Métier",
+        sub_categories: profession,
+    });
+
+    templates::menu(
+        out,
+        &menu,
+    )
+}
+
+mod models {
     pub struct Category<'a> {
         pub name: &'a str,
         pub sub_categories: Vec<SubCategory<'a>>,

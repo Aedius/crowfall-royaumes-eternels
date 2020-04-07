@@ -1,0 +1,25 @@
+@use crate::models::{Category, SubCategory};
+
+@(categories: &[Category])
+
+<!-- Navbar -->
+<div id="menu-container">
+    <header>
+        <nav>
+            <ul>
+                @for Category{sub_categories, name} in categories {
+                <li class="dropdown">
+                    <button class="dropbtn">@name</button>
+                    <ul class="dropdown-content">
+                        @for SubCategory{path, name} in sub_categories {
+                        <li>
+                            <a href="/static/slide/@path">@name</a>
+                        </li>
+                        }
+                    </ul>
+                </li>
+                }
+            </ul>
+        </nav>
+    </header>
+</div>

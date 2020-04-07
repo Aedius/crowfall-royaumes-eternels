@@ -1,9 +1,11 @@
 @use super::statics::base_css;
 @use super::statics::slide_js;
-@use crate::models::{Category, Config, SubCategory};
 @use super::statics::fond_jpg;
 @use super::statics::fond_footer_jpg;
-@(config: &Config, has_slide: bool)
+
+@use crate::menu;
+
+@(has_slide: bool)
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -39,27 +41,7 @@
 <body>
 <div id="global-container">
 
-    <!-- Navbar -->
-    <div id="menu-container">
-        <header>
-            <nav>
-                <ul>
-                    @for Category{sub_categories, name} in &config.categories {
-                    <li class="dropdown">
-                        <button class="dropbtn">@name</button>
-                        <ul class="dropdown-content">
-                            @for SubCategory{path, name} in sub_categories {
-                            <li>
-                                <a href="/static/slide/@path">@name</a>
-                            </li>
-                            }
-                        </ul>
-                    </li>
-                    }
-                </ul>
-            </nav>
-        </header>
-    </div>
+    @:menu()
 
     <div id="header-container">
         <h2 class="title"><a href="/">Royaumes Eternels</a> <span class="subtitle">Le hub de la communauté francophone sur Crowfall.</span></h2>
