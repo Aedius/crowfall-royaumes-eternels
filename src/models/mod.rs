@@ -1,5 +1,6 @@
 pub mod index;
 
+pub const URL_TOOLS_COOKING: &str = "/tools/craft/cooking";
 
 pub struct Category<'a> {
     pub name: &'a str,

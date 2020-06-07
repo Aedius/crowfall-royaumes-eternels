@@ -7,11 +7,15 @@ use templates::statics::favicon_ico;
 //slide
 use templates::statics::StaticFile;
 
-use crate::pages::index::handle_index;
+use crate::models::URL_TOOLS_COOKING;
+use crate::pages::cooking::handle as handle_cooking;
+use crate::pages::index::handle as handle_index;
 
 mod models;
-
 mod pages;
+mod craft;
+
+
 include!(concat!(env!("OUT_DIR"), "/templates.rs"));
 fn main() {
     let server = Server::http("0.0.0.0:8000").unwrap();
@@ -48,6 +52,11 @@ fn handle_get(request: Request) -> Result<(), IoError> {
 
     if url == "/" {
         let response = handle_index();
+        return request.respond(response);
+    }
+
+    if url == URL_TOOLS_COOKING {
+        let response = handle_cooking();
         return request.respond(response);
     }
 

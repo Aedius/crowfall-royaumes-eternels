@@ -10,7 +10,7 @@ use crate::templates::statics::elfettes_png;
 use crate::templates::statics::map_jpg;
 use crate::templates::statics::village_png;
 
-pub fn handle_index() -> Response<Cursor<Vec<u8>>> {
+pub fn handle() -> Response<Cursor<Vec<u8>>> {
     let data = Index {
         slides: vec![Slide {
             src: village_png.name,
