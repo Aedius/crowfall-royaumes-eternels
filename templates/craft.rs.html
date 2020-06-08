@@ -1,45 +1,23 @@
 @use super::head_html;
 @use super::footer_html;
+@use crate::craft::Recipe;
 
-@()
+@(data: &Vec
+<Recipe>)
 
-@:head_html(true)
+    @:head_html(true)
 
-<div id="main-container">
+    <div id="main-container">
 
-    <article>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        TODO
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+        <article>
+            @for recipe in data {
 
-    </article>
+            @if recipe.has_stats() {
+            @recipe.output_description() <br/>
+            }
+
+            }
+        </article>
 
 </div>
 <div class="spacer"></div>
