@@ -11,9 +11,11 @@
         <article>
             @for recipe in data {
 
-            @if recipe.has_stats() {
-            @recipe.output_description() <br/>
-            }
+                @if let Some(output) = recipe.crafted_data() {
+
+            <a href="/tools/craft/recipe/@output.key" >@output.name</a> : @output.stat <br/>
+
+                }
 
             }
         </article>
