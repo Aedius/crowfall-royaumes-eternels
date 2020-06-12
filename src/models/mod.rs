@@ -1,6 +1,12 @@
+use regex::Regex;
+
 pub mod index;
 
 pub const URL_TOOLS_COOKING: &str = "/tools/craft/cooking";
+
+lazy_static! {
+    pub static ref URL_CRAFT_RECIPE_RE: Regex = Regex::new(r"/tools/craft/recipe/([^/]+)$").unwrap();
+}
 
 pub struct Category<'a> {
     pub name: &'a str,

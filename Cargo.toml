@@ -11,3 +11,5 @@ ructe = { version = "^0.11.0",  features = ["mime03", "sass"] }
 [dependencies]
 tiny_http="0.7.0"
 mime = "~0.3"
+regex = "1"
+lazy_static = "1.4.0"

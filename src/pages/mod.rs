@@ -4,6 +4,7 @@ use crate::models::{Category, SubCategory, URL_TOOLS_COOKING};
 
 pub mod index;
 pub mod cooking;
+pub mod recipe;
 
 
 pub fn menu(out: &mut dyn Write) -> io::Result<()> {

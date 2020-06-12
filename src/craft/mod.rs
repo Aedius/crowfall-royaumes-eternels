@@ -2,11 +2,14 @@ use crate::craft::BaseResource::*;
 
 pub mod cooking;
 
+
+#[derive(Clone, Eq, PartialEq, Debug)]
 pub enum Profession {
     Cooking
 }
 
 
+#[derive(Clone, Eq, PartialEq, Debug)]
 pub enum BaseResource {
     Apple,
     Beeswax,
@@ -38,6 +41,7 @@ pub enum BaseResource {
     Onion,
 }
 
+#[derive(Clone, Eq, PartialEq, Debug)]
 pub enum GroupResource {
     AnimalMeat,
     Herb,
@@ -51,6 +55,7 @@ pub enum GroupResource {
     WildRiceOrGnocchi,
 }
 
+#[derive(Clone, Eq, PartialEq, Hash, Debug)]
 pub enum CraftedResource {
     AppleJuice,
     ArtisanCheese,
@@ -130,7 +135,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Apple Juice",
                         stat: "Find Weak Spot +5%",
-                        key: "AppleJuice"
+                        key: "AppleJuice",
                     }
                 )
             }
@@ -139,7 +144,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Artisan Cheese",
                         stat: "Harvest Critical Chance +5%",
-                        key: "ArtisanCheese"
+                        key: "ArtisanCheese",
                     }
                 )
             }
@@ -148,7 +153,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Baked Ice Cream",
                         stat: "Chance to do Fire damage 5%",
-                        key: "BakedIceCream"
+                        key: "BakedIceCream",
                     }
                 )
             }
@@ -158,7 +163,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Bloodworm Stew",
                         stat: "Food Regen +10, grants Trailblazer/master",
-                        key: "BloodwormStew"
+                        key: "BloodwormStew",
                     }
                 )
             }
@@ -167,7 +172,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Bone Broth",
                         stat: "Incoming Healing +3%",
-                        key: "BoneBroth"
+                        key: "BoneBroth",
                     }
                 )
             }
@@ -176,7 +181,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Bread",
                         stat: "Pathfinding +10%",
-                        key: "Bread"
+                        key: "Bread",
                     }
                 )
             }
@@ -185,7 +190,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Biscuits and Gravy",
                         stat: "Food Regen Rate +20",
-                        key: "BiscuitsAndGravy"
+                        key: "BiscuitsAndGravy",
                     }
                 )
             }
@@ -194,7 +199,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Bon Tippers",
                         stat: "Exp Difficulty Mod +15 on next experiment",
-                        key: "BonTippers"
+                        key: "BonTippers",
                     }
                 )
             }
@@ -203,7 +208,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Fresh Butter",
                         stat: "Harvest Chance: Cutting Grit +2%",
-                        key: "Butter"
+                        key: "Butter",
                     }
                 )
             }
@@ -212,7 +217,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Cake",
                         stat: "Health +150, Stamina -15",
-                        key: "Cake"
+                        key: "Cake",
                     }
                 )
             }
@@ -221,7 +226,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Campfire Meaty Stew",
                         stat: "Mounted Movement Speed +5%",
-                        key: "CampfireMeatyStew"
+                        key: "CampfireMeatyStew",
                     }
                 )
             }
@@ -230,7 +235,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Campfire Mushroom Stew",
                         stat: "Harvest Critical Chance +5%",
-                        key: "CampfireMushroomStew"
+                        key: "CampfireMushroomStew",
                     }
                 )
             }
@@ -239,7 +244,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Carrot Juice",
                         stat: "Ranged Distance Bonus +3m",
-                        key: "CarrotJuice"
+                        key: "CarrotJuice",
                     }
                 )
             }
@@ -248,7 +253,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Chocalate Bar",
                         stat: "Combat Movement +5% / Health -150",
-                        key: "ChocolateBar"
+                        key: "ChocolateBar",
                     }
                 )
             }
@@ -257,7 +262,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Chocolate Milk",
                         stat: "HP +150, Stam -15",
-                        key: "ChocolateMilk"
+                        key: "ChocolateMilk",
                     }
                 )
             }
@@ -266,7 +271,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Spicy Chocolate Milk",
                         stat: "Elemental Damage +3%",
-                        key: "ChocolateMilkSpicy"
+                        key: "ChocolateMilkSpicy",
                     }
                 )
             }
@@ -275,7 +280,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Coffee",
                         stat: "Stamina +10",
-                        key: "Coffee"
+                        key: "Coffee",
                     }
                 )
             }
@@ -284,7 +289,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Cookies",
                         stat: "Combat Movement Speed +5%",
-                        key: "Cookie"
+                        key: "Cookie",
                     }
                 )
             }
@@ -293,7 +298,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Chocolate Cookies",
                         stat: "Combat Movement Speed +5%",
-                        key: "CookieChocolate"
+                        key: "CookieChocolate",
                     }
                 )
             }
@@ -305,7 +310,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Gnocchi",
                         stat: "Pathfinding Speed +10%",
-                        key: "Gnocchi"
+                        key: "Gnocchi",
                     }
                 )
             }
@@ -314,7 +319,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Grilled Cheese Sandwich",
                         stat: "Harvest Critical Amount +1",
-                        key: "GrilledCheeseSandwich"
+                        key: "GrilledCheeseSandwich",
                     }
                 )
             }
@@ -323,7 +328,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Auroch Meat Sandwich",
                         stat: "Fire Armor Bonus +3%",
-                        key: "GrilledSandwichAuroch"
+                        key: "GrilledSandwichAuroch",
                     }
                 )
             }
@@ -332,7 +337,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Boar Meat Sandwich",
                         stat: "Ice Armor Bonus +3%",
-                        key: "GrilledSandwichBoar"
+                        key: "GrilledSandwichBoar",
                     }
                 )
             }
@@ -341,7 +346,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Mushroom Sandwich",
                         stat: "Harvest Critical Amount +1",
-                        key: "GrilledSandwichMushroom"
+                        key: "GrilledSandwichMushroom",
                     }
                 )
             }
@@ -350,7 +355,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Bear Meat Sandwich",
                         stat: "Disease Armor Bonus +3%",
-                        key: "GrilledSandwichBear"
+                        key: "GrilledSandwichBear",
                     }
                 )
             }
@@ -359,7 +364,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Elk Meat Sandwich",
                         stat: "Ice Armor Bonus +3%",
-                        key: "GrilledSandwichElk"
+                        key: "GrilledSandwichElk",
                     }
                 )
             }
@@ -368,7 +373,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Wolf Meat Sandwich",
                         stat: "Electric Armor Bonus +3%",
-                        key: "GrilledSandwichWolf"
+                        key: "GrilledSandwichWolf",
                     }
                 )
             }
@@ -377,7 +382,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Spider Meat Sandwich",
                         stat: "Poison Armor Bonus +3%",
-                        key: "GrilledSandwichSpider"
+                        key: "GrilledSandwichSpider",
                     }
                 )
             }
@@ -386,7 +391,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Big Cat Meat Sandwidch",
                         stat: "Nature Armor Bonus +3%",
-                        key: "GrilledSandwichBigCat"
+                        key: "GrilledSandwichBigCat",
                     }
                 )
             }
@@ -395,7 +400,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Ice Cream",
                         stat: "Chance to do Ice damage 5%",
-                        key: "IceCream"
+                        key: "IceCream",
                     }
                 )
             }
@@ -404,7 +409,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Mushroom Kebab",
                         stat: "Plentiful Harvest Wood +1",
-                        key: "KebabMushroom"
+                        key: "KebabMushroom",
                     }
                 )
             }
@@ -413,7 +418,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Auroch Meat Kebab",
                         stat: "Plentiful Harvest Ore +1",
-                        key: "KebabAuroch"
+                        key: "KebabAuroch",
                     }
                 )
             }
@@ -422,7 +427,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Bear Meat Kebab",
                         stat: "Plentiful Harvest Wood +1",
-                        key: "KebabBear"
+                        key: "KebabBear",
                     }
                 )
             }
@@ -431,7 +436,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Big Cat Meat Kebab",
                         stat: "Plentiful Harvest Ore +1",
-                        key: "KebabBigCat"
+                        key: "KebabBigCat",
                     }
                 )
             }
@@ -440,7 +445,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Boar Meat Kebab",
                         stat: "Plentiful Harvest Stone +1",
-                        key: "KebabBoar"
+                        key: "KebabBoar",
                     }
                 )
             }
@@ -449,7 +454,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Elk Meat Kebab",
                         stat: "Plentiful Harvest Stone +1",
-                        key: "KebabElk"
+                        key: "KebabElk",
                     }
                 )
             }
@@ -458,7 +463,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Spider Meat Kebab",
                         stat: "Plentiful Harvest Graves +1",
-                        key: "KebabSpider"
+                        key: "KebabSpider",
                     }
                 )
             }
@@ -467,7 +472,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Wolf Meat Kebab",
                         stat: "Plentiful Harvest Animal +1",
-                        key: "KebabWolf"
+                        key: "KebabWolf",
                     }
                 )
             }
@@ -477,7 +482,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Marsala Stew",
                         stat: "Bard Songs +6 seconds",
-                        key: "MarsalaStew"
+                        key: "MarsalaStew",
                     }
                 )
             }
@@ -486,7 +491,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Meat Burgundy",
                         stat: "Basic Attack Damage +10%",
-                        key: "MeatBurgundy"
+                        key: "MeatBurgundy",
                     }
                 )
             }
@@ -496,7 +501,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Mushroom Stew",
                         stat: "Harvest Critical Chance: All 5%",
-                        key: "MushroomStew"
+                        key: "MushroomStew",
                     }
                 )
             }
@@ -505,7 +510,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Paella",
                         stat: "Ranged Power Damage +5%",
-                        key: "Paella"
+                        key: "Paella",
                     }
                 )
             }
@@ -514,7 +519,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Pasteurized Milk",
                         stat: "Incoming Healing +3%",
-                        key: "PasteurizedMilk"
+                        key: "PasteurizedMilk",
                     }
                 )
             }
@@ -523,7 +528,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Pesto Gnocchi",
                         stat: "Harvest Pips +0.5",
-                        key: "PestoGnocchi"
+                        key: "PestoGnocchi",
                     }
                 )
             }
@@ -534,7 +539,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Pot Roast",
                         stat: "Healing Bonus +3%",
-                        key: "PotRoast"
+                        key: "PotRoast",
                     }
                 )
             }
@@ -543,7 +548,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Red Wine",
                         stat: "Stamina +10, Food Regen -20",
-                        key: "RedWine"
+                        key: "RedWine",
                     }
                 )
             }
@@ -553,7 +558,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Roasted Pig",
                         stat: "Healing Bonus +3%",
-                        key: "RoastedPig"
+                        key: "RoastedPig",
                     }
                 )
             }
@@ -563,7 +568,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Seasoned Mushroom",
                         stat: "Harvest Chance: Soulgems +2%",
-                        key: "SeasonedMushroom"
+                        key: "SeasonedMushroom",
                     }
                 )
             }
@@ -572,7 +577,7 @@ impl CraftedResource {
                     CraftedData {
                         name: "Sumptuous Pot Pie",
                         stat: "General Crafting Exp. Points +1",
-                        key: "SumptuousPotPie"
+                        key: "SumptuousPotPie",
                     }
                 )
             }
@@ -581,17 +586,17 @@ impl CraftedResource {
                     CraftedData {
                         name: "Trail Mix",
                         stat: "Harvest Chance: Survivalist +3%",
-                        key: "TrailMix"
+                        key: "TrailMix",
                     }
                 )
             }
             CraftedResource::Yeast => { None }
         }
     }
-
 }
 
 
+#[derive(Clone, Eq, PartialEq, Debug)]
 pub enum Item {
     Base(BaseResource),
     Group(GroupResource),
@@ -599,6 +604,7 @@ pub enum Item {
 }
 
 
+#[derive(Clone, Eq, PartialEq, Debug)]
 pub struct Recipe {
     pub name: &'static str,
     pub input: Vec<(Item, i8)>,
@@ -608,7 +614,6 @@ pub struct Recipe {
 }
 
 impl Recipe {
-
     pub fn crafted_data(&self) -> Option<CraftedData> {
         self.output.0.get_information()
     }

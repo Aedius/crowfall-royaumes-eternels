@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate lazy_static;
+
 use std::env;
 use std::io::{self, Error as IoError, Write};
 
@@ -7,9 +10,10 @@ use templates::statics::favicon_ico;
 //slide
 use templates::statics::StaticFile;
 
-use crate::models::URL_TOOLS_COOKING;
+use crate::models::{URL_CRAFT_RECIPE_RE, URL_TOOLS_COOKING};
 use crate::pages::cooking::handle as handle_cooking;
 use crate::pages::index::handle as handle_index;
+use crate::pages::recipe::handle as handle_recipe;
 
 mod models;
 mod pages;
@@ -70,16 +74,24 @@ fn handle_get(request: Request) -> Result<(), IoError> {
 
     let tokens: Vec<&str> = url.split("/").collect();
 
-    if tokens.len() != 3 {
-        return request.respond(Response::new_empty(StatusCode(404)));
+    if tokens.len() == 3 && tokens[1] == "static" {
+        if let Some(data) = StaticFile::get(tokens[2]) {
+            let mime_type = data.mime.to_string();
+
+            let mut response = tiny_http::Response::from_data(data.content);
+            let header = tiny_http::Header::from_bytes(&b"Content-Type"[..], mime_type.into_bytes()).unwrap();
+            response.add_header(header);
+            return request.respond(response);
+        }
     }
 
-    if let Some(data) = StaticFile::get(tokens[2]) {
-        let mime_type = data.mime.to_string();
+    if URL_CRAFT_RECIPE_RE.is_match(url) {
+        let caps = URL_CRAFT_RECIPE_RE.captures(url).unwrap();
 
-        let mut response = tiny_http::Response::from_data(data.content);
-        let header = tiny_http::Header::from_bytes(&b"Content-Type"[..], mime_type.into_bytes()).unwrap();
-        response.add_header(header);
+        let as_text = caps.get(1).map_or("", |m| m.as_str());
+
+        let response = handle_recipe(as_text);
+
         return request.respond(response);
     }
 

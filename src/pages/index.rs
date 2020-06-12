@@ -33,7 +33,7 @@ pub fn handle() -> Response<Cursor<Vec<u8>>> {
             content: "Suivez le projet Maeve sur youtube !",
         }),
         articles: vec![Article {
-            img: "img",
+            img: village_png.name,
             title: "premier article",
             url: "url",
             author: "Aedius",
