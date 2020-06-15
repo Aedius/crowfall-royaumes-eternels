@@ -1,19 +1,50 @@
 @use super::head_html;
 @use super::footer_html;
+@use crate::pages::recipe::RecipeTree;
 @use crate::craft::Recipe;
 
-@(data: Recipe)
+@(recipe : Recipe, tree: RecipeTree, max_level: i32)
 
-    @:head_html(true)
+@:head_html(true)
 
-    <div id="main-container">
+<div id="main-container">
 
-        <article>
-           WIP
-        </article>
+    <h1>@recipe.name</h1>
+    <h2>@recipe.profession.get_name() / @recipe.menu</h2>
 
-    </div>
-    <div class="spacer"></div>
+    <article>
+        Basic Resources : <br>
+        <ul>
+            @for base in tree.base.into_iter() {
+            <li> @base.1 * @base.0.get_name()</li>
+            }
+        </ul>
+        <hr/>
+        Grouped Resources : <br>
+        <ul>
+            @for group in tree.group.into_iter() {
+            <li> @group.1 * @group.0.get_name()</li>
+            }
+        </ul>
+        <hr/>
+        Recipe : <br>
+
+        @for i in 1..=max_level {
+        <ul>
+
+        palier @i :
+        @for recipe in tree.recipe_list[&i].as_slice() {
+        <li> @recipe.qty * @recipe.recipe.name</li>
+        }
+
+        </ul>
+        }
+        <br>
+
+    </article>
+
+</div>
+<div class="spacer"></div>
 
 
-    @:footer_html()
+@:footer_html()

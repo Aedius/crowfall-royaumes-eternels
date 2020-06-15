@@ -8,8 +8,29 @@ pub enum Profession {
     Cooking
 }
 
+#[derive(Clone, Eq, PartialEq, Debug)]
+pub enum Item {
+    Base(BaseResource),
+    Group(GroupResource),
+    Crafted(CraftedResource),
+}
 
 #[derive(Clone, Eq, PartialEq, Debug)]
+pub struct Recipe {
+    pub name: &'static str,
+    pub input: Vec<(Item, i32)>,
+    pub output: (CraftedResource, i32),
+    pub profession: Profession,
+    pub menu: &'static str,
+}
+
+impl Recipe {
+    pub fn crafted_data(&self) -> Option<CraftedData> {
+        self.output.0.get_information()
+    }
+}
+
+#[derive(Clone, Eq, PartialEq, Hash, Debug)]
 pub enum BaseResource {
     Apple,
     Beeswax,
@@ -41,7 +62,7 @@ pub enum BaseResource {
     Onion,
 }
 
-#[derive(Clone, Eq, PartialEq, Debug)]
+#[derive(Clone, Eq, PartialEq, Hash, Debug)]
 pub enum GroupResource {
     AnimalMeat,
     Herb,
@@ -596,30 +617,6 @@ impl CraftedResource {
 }
 
 
-#[derive(Clone, Eq, PartialEq, Debug)]
-pub enum Item {
-    Base(BaseResource),
-    Group(GroupResource),
-    Crafted(CraftedResource),
-}
-
-
-#[derive(Clone, Eq, PartialEq, Debug)]
-pub struct Recipe {
-    pub name: &'static str,
-    pub input: Vec<(Item, i8)>,
-    pub output: (CraftedResource, i8),
-    pub profession: Profession,
-    pub menu: &'static str,
-}
-
-impl Recipe {
-    pub fn crafted_data(&self) -> Option<CraftedData> {
-        self.output.0.get_information()
-    }
-}
-
-
 impl GroupResource {
     fn get_base(self) -> Vec<BaseResource> {
         match self {
@@ -693,6 +690,59 @@ impl GroupResource {
             }
         }
     }
+    pub fn get_name(&self) -> &'static str {
+        match self {
+            GroupResource::AnimalMeat => { "AnimalMeat" }
+            GroupResource::Herb => { "Herb" }
+            GroupResource::Mushroom => { "Mushroom" }
+            GroupResource::MeatOrMushroom => { "MeatOrMushroom" }
+            GroupResource::NonBasicOre => { "NonBasicOre" }
+            GroupResource::NonBasicWood => { "NonBasicWood" }
+            GroupResource::Produce => { "Produce" }
+            GroupResource::Seasoning => { "Seasoning" }
+            GroupResource::Ore => { "Ore" }
+            GroupResource::WildRiceOrGnocchi => { "WildRiceOrGnocchi" }
+        }
+    }
 }
 
+impl BaseResource {
+    pub fn get_name(&self) -> &'static str {
+        match self {
+            Apple => { "Apple" }
+            Beeswax => { "Beeswax" }
+            Bloodworm => { "Bloodworm" }
+            Blood => { "Blood" }
+            Bone => { "Bone" }
+            Carrot => { "Carrot" }
+            CocoaBean => { "CocoaBean" }
+            CoffeeBean => { "CoffeeBean" }
+            GroundBlackPepper => { "GroundBlackPepper" }
+            HotPepper => { "HotPepper" }
+            HungerShard => { "HungerShard" }
+            MeatAuroch => { "MeatAuroch" }
+            MeatBear => { "MeatBear" }
+            MeatBigCat => { "MeatBigCat" }
+            MeatBoar => { "MeatBoar" }
+            MeatElk => { "MeatElk" }
+            MeatSpider => { "MeatSpider" }
+            MeatWolf => { "MeatWolf" }
+            MildPepper => { "MildPepper" }
+            PineNuts => { "PineNuts" }
+            Potato => { "Potato" }
+            RawMilk => { "RawMilk" }
+            SugarCane => { "SugarCane" }
+            SeasoningSalt => { "SeasoningSalt" }
+            SweetPepper => { "SweetPepper" }
+            WaterFlask => { "WaterFlask" }
+            WildRice => { "WildRice" }
+            Onion => { "Onion" }
+        }
+    }
+}
 
+impl Profession {
+    pub fn get_name(&self) -> &'static str {
+        match self { Profession::Cooking => { "Cooking" } }
+    }
+}
