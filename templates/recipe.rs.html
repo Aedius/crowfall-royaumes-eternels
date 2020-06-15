@@ -16,14 +16,14 @@
         Basic Resources : <br>
         <ul>
             @for base in tree.base.into_iter() {
-            <li> @base.1 * @base.0.get_name()</li>
+            <li> @format!("{}", base.1.ceil() ) * @base.0.get_name()</li>
             }
         </ul>
         <hr/>
         Grouped Resources : <br>
         <ul>
             @for group in tree.group.into_iter() {
-            <li> @group.1 * @group.0.get_name()</li>
+            <li> @format!("{}", group.1.ceil() ) * @group.0.get_name()</li>
             }
         </ul>
         <hr/>
@@ -33,8 +33,8 @@
         <ul>
 
         palier @i :
-        @for recipe in tree.recipe_list[&i].as_slice() {
-        <li> @recipe.qty * @recipe.recipe.name</li>
+        @for recipe in tree.recipe_list[&i].iter() {
+        <li> @format!("{}", recipe.1.ceil() ) * @recipe.0.name</li>
         }
 
         </ul>

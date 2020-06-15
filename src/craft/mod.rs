@@ -1,3 +1,5 @@
+use std::hash::{Hash, Hasher};
+
 use crate::craft::BaseResource::*;
 
 pub mod cooking;
@@ -27,6 +29,12 @@ pub struct Recipe {
 impl Recipe {
     pub fn crafted_data(&self) -> Option<CraftedData> {
         self.output.0.get_information()
+    }
+}
+
+impl Hash for Recipe{
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.name.hash(state);
     }
 }
 

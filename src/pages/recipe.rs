@@ -9,17 +9,10 @@ use crate::craft::cooking::get_all_recipe;
 use crate::templates::recipe;
 
 #[derive(Debug)]
-pub struct ComputedRecipe {
-    pub recipe: Recipe,
-    pub qty: i32,
-    pub level: i32,
-}
-
-#[derive(Debug)]
 pub struct RecipeTree {
-    pub base: HashMap<BaseResource, i32>,
-    pub group: HashMap<GroupResource, i32>,
-    pub recipe_list: HashMap<i32, Vec<ComputedRecipe>>,
+    pub base: HashMap<BaseResource, f32>,
+    pub group: HashMap<GroupResource, f32>,
+    pub recipe_list: HashMap<i32, HashMap<Recipe, f32>>,
     recipe_map: HashMap<CraftedResource, Recipe>,
 }
 
@@ -60,7 +53,7 @@ pub fn handle(recipe_name: &str) -> Response<Cursor<Vec<u8>>> {
     let current_recipe = current_recipe.unwrap();
 
     // TODO : change qte.
-    let max_level = tree.add_resource(120, current_recipe.clone().output.0);
+    let max_level = tree.add_resource(120.0, current_recipe.clone().output.0);
 
     tree.cleanup();
 
@@ -72,28 +65,28 @@ pub fn handle(recipe_name: &str) -> Response<Cursor<Vec<u8>>> {
 
 
 impl RecipeTree {
-    fn add_resource(&mut self, qte: i32, crafted: CraftedResource) -> i32 {
+    fn add_resource(&mut self, qte: f32, crafted: CraftedResource) -> i32 {
         let mut max_lvl = 0;
 
         let recipe = self.recipe_map.get(&crafted);
         if recipe.is_some() {
             let recipe = recipe.unwrap().clone();
 
-            let nb = (qte as f32 / recipe.output.1 as f32).ceil() as i32;
+            let nb = (qte / recipe.output.1 as f32).ceil();
 
 
             for (item, qty) in &recipe.input {
                 match item {
                     Item::Base(base) => {
-                        let current_base = self.base.entry(base.clone()).or_insert(0);
-                        *current_base += nb * *qty;
+                        let current_base = self.base.entry(base.clone()).or_insert(0.0);
+                        *current_base += nb * *qty as f32;
                     }
                     Item::Group(group) => {
-                        let current_group = self.group.entry(group.clone()).or_insert(0);
-                        *current_group += nb * *qty;
+                        let current_group = self.group.entry(group.clone()).or_insert(0.0);
+                        *current_group += nb * *qty as f32;
                     }
                     Item::Crafted(crafted) => {
-                        let current_lvl = self.add_resource(nb * *qty, crafted.clone());
+                        let current_lvl = self.add_resource(nb * *qty as f32, crafted.clone());
 
                         max_lvl = max(max_lvl, current_lvl);
                     }
@@ -102,14 +95,9 @@ impl RecipeTree {
 
             max_lvl += 1;
 
-            let computed = ComputedRecipe {
-                recipe: recipe.clone(),
-                qty: nb,
-                level: max_lvl,
-            };
-
-            let recipe_list = self.recipe_list.entry(max_lvl).or_insert(Vec::new());
-            recipe_list.push(computed);
+            let recipe_list = self.recipe_list.entry(max_lvl).or_insert(HashMap::new());
+            let current_recipe = recipe_list.entry(recipe).or_insert(0.0);
+            *current_recipe += nb as f32;
         }
         max_lvl
     }
