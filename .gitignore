@@ -11,3 +11,6 @@
 # jetbrains ide
 /.idea/
 /crowfall-royaumes-eternels.iml
+
+# env files
+/.env

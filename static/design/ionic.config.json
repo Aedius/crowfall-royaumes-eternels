@@ -1,0 +1,7 @@
+{
+  "name": "Crowfall Royaumes Eternels Design",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
