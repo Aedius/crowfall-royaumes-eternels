@@ -7,8 +7,8 @@ use std::io::{self, Error as IoError, Write};
 use tiny_http::{Method, Request, Response, Server, StatusCode};
 
 use templates::statics::favicon_ico;
-//slide
 use templates::statics::StaticFile;
+use templates::statics::STATICS;
 
 use crate::models::{URL_CRAFT_RECIPE_RE, URL_TOOLS_COOKING};
 use crate::pages::cooking::handle as handle_cooking;
@@ -24,6 +24,8 @@ include!(concat!(env!("OUT_DIR"), "/templates.rs"));
 fn main() {
     let server = Server::http("0.0.0.0:8000").unwrap();
 
+
+    println!("{:?}",STATICS.iter().map(|s| s.name).collect::<Vec<_>>() );
 
     println!("listening on 8000");
 
@@ -74,9 +76,19 @@ fn handle_get(request: Request) -> Result<(), IoError> {
 
     let tokens: Vec<&str> = url.split("/").collect();
 
-    if tokens.len() == 3 && tokens[1] == "static" {
-        if let Some(data) = StaticFile::get(tokens[2]) {
+    if tokens.len() >= 3 && (tokens[1] == "static" || tokens[1] == "assets") {
+
+        println!("statics !!!\n, length: {:?}, file: {:?}\n",
+                 tokens.len(),
+                 tokens[tokens.len()-1]
+        );
+
+        if let Some(data) = StaticFile::get(tokens[tokens.len()-1]) {
             let mime_type = data.mime.to_string();
+
+            println!("statics !!!\n, length: {:?}\n",
+                     mime_type,
+            );
 
             let mut response = tiny_http::Response::from_data(data.content);
             let header = tiny_http::Header::from_bytes(&b"Content-Type"[..], mime_type.into_bytes()).unwrap();
