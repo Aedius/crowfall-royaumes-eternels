@@ -18,9 +18,9 @@ ionic-serve:
 rust-build:
 	cargo build
 
-all-build: ionic-build rust-build
-
 ################ ALL ################
+
+build: ionic-build rust-build
 
 run:
 	cargo run
