@@ -1,4 +1,7 @@
-use tiny_http::{Method, Request, Response, Server, StatusCode};
+use std::fs::File;
+use std::path::Path;
+
+use tiny_http::{Method, Response, Server, StatusCode};
 
 mod craft;
 
@@ -13,21 +16,20 @@ fn main() {
                  request.url(),
                  request.headers(),
         );
-        if request.method() == &Method::Get {
-            match request.respond(Response::new_empty(StatusCode(200))) {
-                Ok(_) => {}
-                Err(e) => {
-                    println!("{}", e)
-                }
-            }
-        } else {
-            match request.respond(Response::new_empty(StatusCode(405))) {
-                Ok(_) => {}
-                Err(e) => {
-                    println!("{}", e)
-                }
-            }
-        }
+        // if request.method() == &Method::Get {
+        //
+        //     let response = tiny_http::Response::from_file(File::open(&Path::new("ionic/public/assets/fond.jpg")).unwrap());
+        //
+        //     let _ = request.respond(response);
+        //
+        // } else {
+        //     match request.respond(Response::new_empty(StatusCode(405))) {
+        //         Ok(_) => {}
+        //         Err(e) => {
+        //             println!("{}", e)
+        //         }
+        //     }
+        // }
     }
 }
 
