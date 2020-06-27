@@ -2,16 +2,16 @@
 
 include .env
 
-################ IONIC ################
+################ NODE ################
 
-ionic-docker-build:
-	docker build -t myionic:latest -f dockerfiles/ionic.Dockerfile dockerfiles
+node-docker-build:
+	docker build -t mynode:latest -f dockerfiles/node.Dockerfile dockerfiles
 
-ionic-build: ionic-docker-build
-	docker run -v ${DIR}/ionic:/project -it myionic:latest ionic build --engine=browser --prod
+node-build: node-docker-build
+	docker run -v ${DIR}/node:/project/crowfall-royaules-eternels -it mynode:latest gatsby new crowfall-royaules-eternels https://github.com/gatsbyjs/gatsby-starter-hello-world
 
-ionic-serve:
-	docker run -v ${DIR}/ionic:/project -p8080:8100 -it myionic:latest ionic serve
+node-dev:node-docker-build
+	docker run -v ${DIR}/node:/project -p${NODE_SERVE_PORT}:8000 -it mynode:latest gatsby develop --host=0.0.0.0
 
 ################ RUST ################
 
@@ -20,7 +20,7 @@ rust-build:
 
 ################ ALL ################
 
-build: ionic-build rust-build
+build: node-build rust-build
 
 run:
 	cargo run
