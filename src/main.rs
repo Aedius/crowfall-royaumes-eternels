@@ -1,31 +1,20 @@
-#[macro_use]
-extern crate lazy_static;
-
 use std::env;
-use std::io::{self, Error as IoError, Write};
+use std::fs::File;
+use std::path::Path;
 
 use tiny_http::{Method, Request, Response, Server, StatusCode};
 
-use templates::statics::favicon_ico;
-//slide
-use templates::statics::StaticFile;
-
-use crate::models::{URL_CRAFT_RECIPE_RE, URL_TOOLS_COOKING};
-use crate::pages::cooking::handle as handle_cooking;
-use crate::pages::index::handle as handle_index;
-use crate::pages::recipe::handle as handle_recipe;
-
-mod models;
-mod pages;
 mod craft;
 
-
-include!(concat!(env!("OUT_DIR"), "/templates.rs"));
 fn main() {
-    let server = Server::http("0.0.0.0:8000").unwrap();
+    let server = Server::http("0.0.0.0:8081").unwrap();
 
+    println!("listening on 8081");
 
-    println!("listening on 8000");
+    let folder_prefix = match env::var("IONIC_FOLDER") {
+        Ok(val) => val,
+        Err(_) => "ionic/build".to_string(),
+    };
 
     for request in server.incoming_requests() {
         println!("received request!\n, method: {:?}\n, url: {:?}\n, headers: {:?}\n",
@@ -34,12 +23,14 @@ fn main() {
                  request.headers(),
         );
         if request.method() == &Method::Get {
-            match handle_get(request) {
-                Ok(_) => {}
-                Err(e) => {
-                    println!("{}", e)
+            let path = get_path(folder_prefix.clone(), request.url().to_string());
+
+            match path {
+                ResourceKind::Static(path) => {
+                    respond_file(path, request)
                 }
-            }
+                ResourceKind::Api(_) => {}
+            };
         } else {
             match request.respond(Response::new_empty(StatusCode(405))) {
                 Ok(_) => {}
@@ -51,60 +42,45 @@ fn main() {
     }
 }
 
-fn handle_get(request: Request) -> Result<(), IoError> {
-    let url = request.url();
+enum ResourceKind {
+    Static(String),
+    Api(String),
+}
 
-    if url == "/" {
-        let response = handle_index();
-        return request.respond(response);
-    }
-
-    if url == URL_TOOLS_COOKING {
-        let response = handle_cooking();
-        return request.respond(response);
-    }
-
-    if url == "/favicon.ico" {
-        let mime_type = favicon_ico.mime.to_string();
-        let mut response = tiny_http::Response::from_data(favicon_ico.content);
-        let header = tiny_http::Header::from_bytes(&b"Content-Type"[..], mime_type.into_bytes()).unwrap();
-        response.add_header(header);
-        return request.respond(response);
-    }
-
-    let tokens: Vec<&str> = url.split("/").collect();
-
-    if tokens.len() == 3 && tokens[1] == "static" {
-        if let Some(data) = StaticFile::get(tokens[2]) {
-            let mime_type = data.mime.to_string();
-
-            let mut response = tiny_http::Response::from_data(data.content);
-            let header = tiny_http::Header::from_bytes(&b"Content-Type"[..], mime_type.into_bytes()).unwrap();
-            response.add_header(header);
-            return request.respond(response);
+fn get_path(prefix: String, path: String) -> ResourceKind {
+    if path.len() > 5 {
+        if &path[0..5] == "/api/" {
+            return ResourceKind::Api(path);
         }
     }
 
-    if URL_CRAFT_RECIPE_RE.is_match(url) {
-        let caps = URL_CRAFT_RECIPE_RE.captures(url).unwrap();
-
-        let as_text = caps.get(1).map_or("", |m| m.as_str());
-
-        let response = handle_recipe(as_text);
-
-        return request.respond(response);
+    if path == "/".to_string() {
+        return ResourceKind::Static(format!("{}/index.html", prefix));
     }
 
-    request.respond(Response::new_empty(StatusCode(404)))
+    ResourceKind::Static(format!("{}{}", prefix, path))
 }
 
+fn respond_file(path: String, request: Request) {
+    let file = match File::open(&Path::new(path.as_str())) {
+        Ok(file) => {
+            file
+        }
+        Err(_) => {
+            return match request.respond(Response::new_empty(StatusCode(404))) {
+                Ok(_) => {}
+                Err(e) => {
+                    println!("{}", e)
+                }
+            };
+        }
+    };
 
-fn r2s<Call>(call: Call) -> String
-    where
-        Call: FnOnce(&mut dyn Write) -> io::Result<()>,
-{
-    let mut buf = Vec::new();
-    call(&mut buf).unwrap();
-    String::from_utf8(buf).unwrap()
+    let response = tiny_http::Response::from_file(file);
+    match request.respond(response) {
+        Ok(_) => {}
+        Err(e) => {
+            println!("{}", e)
+        }
+    }
 }
-

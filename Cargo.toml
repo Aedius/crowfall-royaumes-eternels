@@ -3,10 +3,6 @@ name = "crowfall-royaumes-eternels"
 version = "0.1.0"
 authors = ["Aedius"]
 edition = "2018"
-build = "src/build.rs"
-
-[build-dependencies]
-ructe = { version = "^0.11.0",  features = ["mime03", "sass"] }
 
 [dependencies]
 tiny_http="0.7.0"
