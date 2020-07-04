@@ -7,11 +7,18 @@ include .env
 node-docker-build:
 	docker build -t mynode:latest -f dockerfiles/node.Dockerfile dockerfiles
 
-node-dev: node-docker-build
-	docker run -v ${DIR}/node:/project -p${NODE_SERVE_PORT}:8000 -it mynode:latest /bin/bash -c "yarn install && gatsby develop --host=0.0.0.0"
+node-install: node-docker-build
+	docker run -v ${DIR}/node:/project -it mynode:latest /bin/bash -c "yarn install"
 
-node-prod: node-docker-build
-	docker run -v ${DIR}/node:/project -it mynode:latest /bin/bash -c "yarn install && gatsby build"
+# example : make node-cli CMD="npm --version"
+node-cli: node-install
+	docker run -v ${DIR}/node:/project -it mynode:latest /bin/bash -c "${CMD}"
+
+node-dev: node-install
+	docker run -v ${DIR}/node:/project -p${NODE_SERVE_PORT}:3000 -it mynode:latest /bin/bash -c "npm run develop"
+
+node-prod: node-install
+	docker run -v ${DIR}/node:/project -it mynode:latest /bin/bash -c "npm run build"
 
 
 ################ RUST ################

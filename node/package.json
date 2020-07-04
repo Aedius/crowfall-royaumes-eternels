@@ -1,31 +1,36 @@
 {
-  "name": "gatsby-starter-hello-world",
+  "name": "crowfall-royaumes-eternels-front",
   "private": true,
-  "description": "A simplified bare-bones starter for Gatsby",
+  "description": "frontend for royaumes-eternels.net",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "develop": "webpack-dev-server --host 0.0.0.0 --mode development",
+    "build" : "webpack --mode production"
   },
   "dependencies": {
-    "gatsby": "^2.23.10",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "@babel/cli": "7.1.0",
+    "@babel/core": "7.1.0",
+    "@babel/preset-env": "7.1.0",
+    "@babel/preset-react": "7.0.0",
+    "babel-loader": "8.0.2",
+    "css-loader": "1.0.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "style-loader": "0.23.0",
+    "webpack": "4.19.1",
+    "webpack-cli": "3.1.1",
+    "webpack-dev-server": "3.1.8"
   },
   "devDependencies": {
     "prettier": "2.0.5"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
+    "url": "https://github.com/Aedius/crowfall-royaumes-eternels",
+    "directory": "node"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/Aedius/crowfall-royaumes-eternels/issues"
   }
 }
